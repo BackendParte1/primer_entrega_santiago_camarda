@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "id": 1738264522169,
+    "products": []
+  },
+  {
+    "id": 1,
+    "name": "Cafetera Eléctrica",
+    "description": "Cafetera eléctrica de 12 tazas con función de autoapagado.",
+    "price": 29.99,
+    "category": "Electrodomésticos",
+    "brand": "CaféMaker",
+    "stock": 100,
+    "image": "https://example.com/images/cafetera-electrica.jpg"
+  },
+  {
+    "id": 1738619748224,
+    "title": "Cafetera Eléctrica",
+    "description": "Cafetera eléctrica de 12 tazas con función de autoapagado.",
+    "code": "CAF-123",
+    "price": 29.99,
+    "status": true,
+    "stock": 100,
+    "thumbnails": [
+      "https://example.com/images/cafetera1.jpg",
+      "https://example.com/images/cafetera2.jpg"
+    ]
+  }
+]

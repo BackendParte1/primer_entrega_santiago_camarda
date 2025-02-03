@@ -1,6 +1,7 @@
 import { Router } from "express";
 import fs from "fs";
 import path from "path";
+import { sourceMapsEnabled } from "process";
 import { fileURLToPath } from "url";
 
 const router = Router();
@@ -22,13 +23,53 @@ const readProducts = () => {
 
 // Obtener todos los productos
 router.get("/", (req, res) => {
-    res.json(readProducts());
+    const {limit} =req.query;//obtiene el valor de limit desde la consulta
+    const products=readProducts();
+    //concertir limit a un numero
+    const limitedProducts=limit?products.slice(0,parseInt(limit)):products;
+    res.json(limitedProducts);//devuleve la lista de productos limitads
 });
 
+
+//obtener un producto por su id
+router.get("/:id",(req,res)=>{
+    const products=readProducts();
+    const productId=parseInt(req.params.id);
+    const product=products.find(p=>p.id==productId);
+
+    if(product){
+        res.json(product);
+    }else
+    {
+        res.status(404).json({message:"producto no ecnotnrado"});
+    }
+
+})
 // Agregar un nuevo producto
 router.post("/", (req, res) => {
     const products = readProducts();
-    const newProduct = { id: Date.now(), ...req.body };
+    //EXTRAER LOS CAMPOS DEl body
+    const {title,description,code,price,stock,thumbnails,category}=req.body;
+
+    //validacion de los campos
+    if(!title || !description || !code || !price || !stock || !category){
+        return res.status(400).json({message:"faltan campos"});
+    }
+
+    //generar ID
+    const newId=Date.now();
+    //crear un nuevo producto
+    const newProduct={
+        id:newId,
+        title,
+        description,
+        code,
+        price,
+        status:true,
+        stock,
+        thumbnails: thumbnails || []
+    }
+  
     products.push(newProduct);
 
     fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
