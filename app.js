@@ -47,8 +47,21 @@ io.on("connection",(socket)=>{
         }
     });
 
-    socket.on("deleateProduct",async(productData)=>{
-        
+    socket.on("deleteProduct",async(productData)=>{
+        try {
+            //hasat aca bien
+            const deleteProductId=await productManajer.deleteProductById(productData.id);
+           
+            if(deleteProductId===null)
+            {
+                console.log("producto no encotrado");
+
+            }
+
+            io.emit("productDeleted",deleteProductId);
+        } catch (error) {
+            console.log("error al eliminar el producto");
+        }
     })
 })
 
